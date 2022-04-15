@@ -1,7 +1,8 @@
 import React from "react";
 import { Flex, Heading, Text } from "@chakra-ui/react";
+import CopyButton from "./CopyButton";
 
-export default function DataCard() {
+export default function DataCard({ title, textArray }) {
     return (
         <Flex w={"100%"} maxW={"800px"}>
             <Flex
@@ -13,10 +14,21 @@ export default function DataCard() {
                 border={"#0083b044 solid 1px"}
                 alignItems={"center"}
                 py={8}
+                flexGrow={1}
             >
-                <Heading color={"141e30"}>FirstName LastName</Heading>
-                <Text color={"#666666"}>Email@university.edu</Text>
-                <Text color={"#666666"}>ID: 123-456-789</Text>
+                <Flex w={"100%"}>
+                    <CopyButton />
+                    <Flex flexDirection={"column"} flexGrow={1}>
+                        <Heading size={"md"} color={"141e30"}>
+                            {title}
+                        </Heading>
+                        {textArray.map((text) => (
+                            <Text key={text} color={"#666666"}>
+                                {text}
+                            </Text>
+                        ))}
+                    </Flex>
+                </Flex>
             </Flex>
         </Flex>
     );

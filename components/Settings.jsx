@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Box, Button, Collapse, Flex, Switch, Text } from "@chakra-ui/react";
 import NumberInput from "./NumberInput";
 
-export default function Settings() {
-    const [show, setShow] = useState(true);
+export default function Settings({ factorySize, setFactorySize }) {
+    const [show, setShow] = useState(false);
 
     const handleToggle = () => setShow(!show);
 
@@ -17,7 +17,10 @@ export default function Settings() {
                     <Flex flexDirection={"column"} gap={2} my={4}>
                         <Flex alignItems={"center"} gap={2}>
                             <Text>Objects to Mock:</Text>
-                            <NumberInput />
+                            <NumberInput
+                                setFactorySize={setFactorySize}
+                                factorySize={factorySize}
+                            />
                         </Flex>
                         <Flex alignItems={"center"} gap={2}>
                             <Switch size={"md"} />
