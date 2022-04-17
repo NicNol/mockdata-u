@@ -26,18 +26,21 @@ export default function Home() {
                         description={
                             "Students may have first names, last names, email addresses, and ID numbers"
                         }
+                        href={"/mock-student"}
                     />
                     <HomeCard
                         title={"Class"}
                         description={
                             "Classes may have numbers, titles, assignments, modules, instructors, and student names"
                         }
+                        href={"/mock-class"}
                     />
                     <HomeCard
                         title={"University"}
                         description={
                             "Universities may have names, logos, addresses, professional staff, departments, classes, and students"
                         }
+                        href={"/mock-class"}
                     />
                 </Flex>
             </Flex>

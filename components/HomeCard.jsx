@@ -1,7 +1,8 @@
 import React from "react";
 import { Flex, Heading, LinkBox, LinkOverlay, Text } from "@chakra-ui/react";
+import { default as NextLink } from "next/link";
 
-export default function HomeCard({ title, description }) {
+export default function HomeCard({ title, description, href }) {
     return (
         <Flex w={"100%"} maxW={"800px"}>
             <LinkBox w={"100%"}>
@@ -18,9 +19,11 @@ export default function HomeCard({ title, description }) {
                     _active={{ backgroundColor: "#0083b066" }}
                     transition={"background-color .25s"}
                 >
-                    <LinkOverlay href="#">
-                        <Heading color={"141e30"}>{title}</Heading>
-                    </LinkOverlay>
+                    <NextLink href={href} passHref>
+                        <LinkOverlay href="#">
+                            <Heading color={"141e30"}>{title}</Heading>
+                        </LinkOverlay>
+                    </NextLink>
                     <Text color={"#666666"}>{description}</Text>
                 </Flex>
             </LinkBox>

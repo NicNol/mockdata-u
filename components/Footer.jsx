@@ -23,7 +23,9 @@ export default function Footer() {
             <Flex gap={16}>
                 <Stack>
                     <Flex color={"white"}>
-                        <Link>Home</Link>
+                        <NextLink href={"/"} passHref>
+                            <Link>Home</Link>
+                        </NextLink>
                     </Flex>
                 </Stack>
                 <Stack color={"white"}>
