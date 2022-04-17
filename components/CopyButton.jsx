@@ -10,6 +10,8 @@ export default function CopyButton() {
             alignItems={"center"}
             flexDirection={"column"}
             color={"#0083b044"}
+            _hover={{ cursor: "pointer", userSelect: "none" }}
+            onClick={() => window.alert("copied!")}
         >
             <Icon as={IoCopyOutline} w={16} h={16} />
             <Text size={"xs"} position={"relative"} bottom={10} left={1}>

@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Heading, Icon, Link, Stack } from "@chakra-ui/react";
 import { IoSchoolSharp } from "react-icons/io5";
+import { default as NextLink } from "next/link";
 
 export default function Footer() {
     return (
@@ -27,9 +28,15 @@ export default function Footer() {
                 </Stack>
                 <Stack color={"white"}>
                     <Heading size={"sm"}>Mock Data</Heading>
-                    <Link>Student Data</Link>
-                    <Link>Class Data</Link>
-                    <Link>University Data</Link>
+                    <NextLink href={"/mock-student"} passHref>
+                        <Link>Student Data</Link>
+                    </NextLink>
+                    <NextLink href={"/mock-class"} passHref>
+                        <Link>Class Data</Link>
+                    </NextLink>
+                    <NextLink href={"/mock-university"} passHref>
+                        <Link>University Data</Link>
+                    </NextLink>
                 </Stack>
             </Flex>
         </Flex>

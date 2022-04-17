@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Heading, Link } from "@chakra-ui/react";
+import { default as NextLink } from "next/link";
 
 export default function Sidebar({ children }) {
     return (
@@ -16,13 +17,21 @@ export default function Sidebar({ children }) {
         >
             <Flex direction={"column"}>
                 <Heading size={"sm"}>Navigation</Heading>
-                <Link>Home</Link>
+                <NextLink href={"/"} passHref>
+                    <Link>Home</Link>
+                </NextLink>
             </Flex>
             <Flex direction={"column"}>
                 <Heading size={"sm"}>Mock Data</Heading>
-                <Link>Student Data</Link>
-                <Link>Class Data</Link>
-                <Link>University Data</Link>
+                <NextLink href={"/mock-student"} passHref>
+                    <Link>Student Data</Link>
+                </NextLink>
+                <NextLink href={"/mock-class"} passHref>
+                    <Link>Class Data</Link>
+                </NextLink>
+                <NextLink href={"/mock-university"} passHref>
+                    <Link>University Data</Link>
+                </NextLink>
             </Flex>
             {children}
         </Flex>

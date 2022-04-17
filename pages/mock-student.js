@@ -8,10 +8,10 @@ import DataButtonGroup from "../components/DataButtonGroup";
 
 export default function Home() {
     const [students, setStudents] = useState([]);
-    const [factorySize, setFactorySize] = useState(1);
+    const [factorySize, setFactorySize] = useState(3);
 
     useEffect(() => {
-        setStudents([...createMultipleStudents(1)]);
+        setStudents([...createMultipleStudents(3)]);
     }, []);
 
     const studentDataCards = students.map((student) => {
