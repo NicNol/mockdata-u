@@ -4,7 +4,7 @@ import { default as NextLink } from "next/link";
 
 export default function HomeCard({ title, description, href }) {
     return (
-        <Flex w={"100%"} maxW={"800px"}>
+        <Flex w={"100%"} maxW={"800px"} px={4}>
             <LinkBox w={"100%"}>
                 <Flex
                     bg={"#0083b022"}
@@ -24,7 +24,9 @@ export default function HomeCard({ title, description, href }) {
                             <Heading color={"141e30"}>{title}</Heading>
                         </LinkOverlay>
                     </NextLink>
-                    <Text color={"#666666"}>{description}</Text>
+                    <Text color={"#666666"} px={4}>
+                        {description}
+                    </Text>
                 </Flex>
             </LinkBox>
         </Flex>

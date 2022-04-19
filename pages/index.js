@@ -17,7 +17,7 @@ export default function Home() {
                         fontWeight={"thin"}
                         color={"141e30"}
                         position={"relative"}
-                        right={"20%"}
+                        right={["5%", "10%", "10%", "20%"]}
                     >
                         I want to mock data for a...{" "}
                     </Heading>
