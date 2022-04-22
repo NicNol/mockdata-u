@@ -18,7 +18,6 @@ export default function CopyButton({ content }) {
             placement={"top"}
             hasArrow
             isOpen={openStatus}
-            closeDelay={2000}
             gutter={4}
             bgGradient={"linear-gradient(to top, #141e30, #243b55)"}
         >

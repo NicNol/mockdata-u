@@ -1,5 +1,6 @@
-import React from "react";
-import { Button, Flex } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Button, Flex, Tooltip } from "@chakra-ui/react";
+import copy from "copy-to-clipboard";
 
 export default function DataButtonGroup({
     data,
@@ -7,6 +8,25 @@ export default function DataButtonGroup({
     factory,
     factorySize,
 }) {
+    const contentStringArray = data.map((object) => {
+        return Object.keys(object).reduce(
+            (previous, current) => `${previous}${object[current]}\n`,
+            ""
+        );
+    });
+
+    const content = contentStringArray.reduce(
+        (previous, current) => `${previous}${current}\n`,
+        ""
+    );
+    const [openStatus, setOpenStatus] = useState(false);
+
+    function handleCopy() {
+        copy(content);
+        setOpenStatus(true);
+        setTimeout(() => setOpenStatus(false), 2000);
+    }
+
     return (
         <Flex
             w={"100%"}
@@ -15,7 +35,18 @@ export default function DataButtonGroup({
             gap={4}
             flexWrap={"wrap"}
         >
-            <Button flexGrow={1}>Copy All Data</Button>
+            <Tooltip
+                label={"Copied to Clipboard!"}
+                placement={"top"}
+                hasArrow
+                isOpen={openStatus}
+                gutter={4}
+                bgGradient={"linear-gradient(to top, #141e30, #243b55)"}
+            >
+                <Button flexGrow={1} onClick={() => handleCopy()}>
+                    Copy All Data
+                </Button>
+            </Tooltip>
             <Button
                 flexGrow={1}
                 onClick={() => setData([...factory(factorySize), ...data])}
