@@ -3,8 +3,13 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import CopyButton from "./CopyButton";
 
 export default function DataCard({ title, textArray }) {
+    const content = textArray.reduce(
+        (previous, current) => `${previous}\n${current}`,
+        title
+    );
+
     return (
-        <Flex w={"100%"} maxW={"800px"}>
+        <Flex w={"100%"} maxW={"800px"} px={4}>
             <Flex
                 bg={"#0083b022"}
                 flexDirection={"column"}
@@ -17,7 +22,7 @@ export default function DataCard({ title, textArray }) {
                 flexGrow={1}
             >
                 <Flex w={"100%"}>
-                    <CopyButton />
+                    <CopyButton content={content} />
                     <Flex flexDirection={"column"} flexGrow={1}>
                         <Heading size={"md"} color={"141e30"}>
                             {title}
