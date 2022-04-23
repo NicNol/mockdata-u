@@ -14,6 +14,11 @@ export default function Home() {
     const { isOpen, onOpen, onClose } = useDisclosure(); // For DeleteAlert
     const [dataAfterDelete, setDataAfterDelete] = useState([]);
 
+    /* Data view toggles */
+    const [showTitle, setShowTitle] = useState(true);
+    const [showEmail, setShowEmail] = useState(true);
+    const [showIdNumber, setShowIdNumber] = useState(true);
+
     useEffect(() => {
         setStudents([...createMultipleStudents(3)]);
     }, []);
@@ -30,13 +35,20 @@ export default function Home() {
         onOpen();
     }
 
+    function handleTextArray(email, idNumber) {
+        const output = [];
+        showEmail ? output.push(email) : null;
+        showIdNumber ? output.push(`ID: ${idNumber}`) : null;
+        return output;
+    }
+
     const studentDataCards = students.map((student) => {
         const { firstName, lastName, email, idNumber } = student;
         return (
             <DataCard
                 key={`${firstName} ${lastName}`}
-                title={`${firstName} ${lastName}`}
-                textArray={[email, `ID: ${idNumber}`]}
+                title={showTitle ? `${firstName} ${lastName}` : ""}
+                textArray={handleTextArray(email, idNumber)}
                 deleteCard={() => deleteOne(student)}
             />
         );
@@ -60,6 +72,16 @@ export default function Home() {
                         <Settings
                             setFactorySize={setFactorySize}
                             factorySize={factorySize}
+                            toggles={{
+                                setShowTitle,
+                                setShowEmail,
+                                setShowIdNumber,
+                            }}
+                            toggleValues={{
+                                showTitle,
+                                showEmail,
+                                showIdNumber,
+                            }}
                         />
                     </Flex>
                     <DataButtonGroup

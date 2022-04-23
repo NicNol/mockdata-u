@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { Box, Button, Collapse, Flex, Switch, Text } from "@chakra-ui/react";
+import { Button, Collapse, Flex, Switch, Text } from "@chakra-ui/react";
 import NumberInput from "./NumberInput";
 
-export default function Settings({ factorySize, setFactorySize }) {
+export default function Settings({
+    factorySize,
+    setFactorySize,
+    toggles,
+    toggleValues,
+}) {
     const [show, setShow] = useState(false);
 
     const handleToggle = () => setShow(!show);
+    const { setShowTitle, setShowEmail, setShowIdNumber } = toggles;
+    const { showTitle, showEmail, showIdNumber } = toggleValues;
 
     return (
         <Flex flexDirection={"column"}>
@@ -22,15 +29,27 @@ export default function Settings({ factorySize, setFactorySize }) {
                         />
                     </Flex>
                     <Flex alignItems={"center"} gap={2}>
-                        <Switch size={"md"} />
+                        <Switch
+                            size={"md"}
+                            isChecked={showTitle}
+                            onChange={() => setShowTitle(!showTitle)}
+                        />
                         <Text>Display First Name and Last Name?</Text>
                     </Flex>
                     <Flex alignItems={"center"} gap={2}>
-                        <Switch size={"md"} />
+                        <Switch
+                            size={"md"}
+                            isChecked={showEmail}
+                            onChange={() => setShowEmail(!showEmail)}
+                        />
                         <Text>Display Email Address?</Text>
                     </Flex>
                     <Flex alignItems={"center"} gap={2}>
-                        <Switch size={"md"} />
+                        <Switch
+                            size={"md"}
+                            isChecked={showIdNumber}
+                            onChange={() => setShowIdNumber(!showIdNumber)}
+                        />
                         <Text>Display Student ID Number?</Text>
                     </Flex>
                 </Flex>

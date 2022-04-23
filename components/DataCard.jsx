@@ -1,5 +1,5 @@
 import React from "react";
-import { CloseButton, Flex, Heading, Text } from "@chakra-ui/react";
+import { Flex, Heading, Text } from "@chakra-ui/react";
 import CopyButton from "./CopyButton";
 import DataCardContextMenu from "./DataCardContextMenu";
 
