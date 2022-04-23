@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Flex, useDisclosure } from "@chakra-ui/react";
+import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import AppWrapper from "../components/AppWrapper";
 import DataCard from "../components/DataCard";
 import Settings from "../components/Settings";
 import { createMultipleStudents } from "./api/student/[studentCount]";
 import DataButtonGroup from "../components/DataButtonGroup";
 import DeleteAlert from "../components/DeleteAlert";
+import BreadCrumb from "../components/BreadCrumb";
 
 export default function Home() {
     const [students, setStudents] = useState([]);
@@ -50,17 +51,36 @@ export default function Home() {
                     alignItems={"center"}
                     gap={8}
                 >
-                    <Settings
-                        setFactorySize={setFactorySize}
-                        factorySize={factorySize}
-                    />
+                    <Flex
+                        w={"100%"}
+                        maxW={"800px"}
+                        justifyContent={"space-between"}
+                    >
+                        <BreadCrumb currentPageName={"Mock Student Data"} />
+                        <Settings
+                            setFactorySize={setFactorySize}
+                            factorySize={factorySize}
+                        />
+                    </Flex>
                     <DataButtonGroup
                         data={students}
                         setData={setStudents}
                         factory={createMultipleStudents}
                         factorySize={factorySize}
+                        onOpen={onOpen}
                     />
-                    {studentDataCards}
+                    <Flex
+                        direction={"column"}
+                        w={"100%"}
+                        alignItems={"center"}
+                        maxW={"800px"}
+                    >
+                        <Text alignSelf={"flex-start"} color={"#999"}>
+                            Showing data for {students.length}{" "}
+                            {students.length === 1 ? "student" : "students"}:
+                        </Text>
+                        {studentDataCards}
+                    </Flex>
                 </Flex>
             </Flex>
             <DeleteAlert

@@ -10,7 +10,7 @@ export default function DataCard({ title, textArray, deleteCard }) {
     );
 
     return (
-        <Flex w={"100%"} maxW={"800px"} px={4}>
+        <Flex w={"100%"} maxW={"800px"} px={4} my={4}>
             <Flex
                 bg={"#0083b022"}
                 borderRadius={8}
