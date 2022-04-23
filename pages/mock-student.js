@@ -1,18 +1,33 @@
 import { useState, useEffect } from "react";
-import { Flex } from "@chakra-ui/react";
+import { Flex, useDisclosure } from "@chakra-ui/react";
 import AppWrapper from "../components/AppWrapper";
 import DataCard from "../components/DataCard";
 import Settings from "../components/Settings";
 import { createMultipleStudents } from "./api/student/[studentCount]";
 import DataButtonGroup from "../components/DataButtonGroup";
+import DeleteAlert from "../components/DeleteAlert";
 
 export default function Home() {
     const [students, setStudents] = useState([]);
     const [factorySize, setFactorySize] = useState(1);
+    const { isOpen, onOpen, onClose } = useDisclosure(); // For DeleteAlert
+    const [dataAfterDelete, setDataAfterDelete] = useState([]);
 
     useEffect(() => {
         setStudents([...createMultipleStudents(3)]);
     }, []);
+
+    useEffect(() => setDataAfterDelete([]), [students]);
+
+    function deleteOne(studentToDelete) {
+        const modifiedStudents = students.filter((student) =>
+            Object.keys(student).some(
+                (value, index) => student[value] !== studentToDelete[value]
+            )
+        );
+        setDataAfterDelete(modifiedStudents);
+        onOpen();
+    }
 
     const studentDataCards = students.map((student) => {
         const { firstName, lastName, email, idNumber } = student;
@@ -21,6 +36,7 @@ export default function Home() {
                 key={`${firstName} ${lastName}`}
                 title={`${firstName} ${lastName}`}
                 textArray={[email, `ID: ${idNumber}`]}
+                deleteCard={() => deleteOne(student)}
             />
         );
     });
@@ -47,6 +63,12 @@ export default function Home() {
                     {studentDataCards}
                 </Flex>
             </Flex>
+            <DeleteAlert
+                isOpen={isOpen}
+                onClose={onClose}
+                setData={setStudents}
+                dataAfterDelete={dataAfterDelete}
+            />
         </AppWrapper>
     );
 }

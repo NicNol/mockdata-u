@@ -32,6 +32,7 @@ export default function CopyButton({ content }) {
                     userSelect: "none",
                     color: "#0083b088",
                 }}
+                _active={{ color: "#0083b0cc" }}
                 onClick={() => handleCopy()}
                 transition={".25s"}
             >
