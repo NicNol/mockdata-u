@@ -13,7 +13,7 @@
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
         "@faker-js/faker": "^6.1.2",
-        "canvas": "^2.9.1",
+        "canvas": "^2.6.1",
         "copy-to-clipboard": "^3.3.1",
         "framer-motion": "^6.2.10",
         "html2canvas": "^1.4.1",
