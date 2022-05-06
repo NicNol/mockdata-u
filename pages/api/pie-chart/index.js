@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 const { createCanvas } = require("canvas");
 const fs = require("fs");
 
@@ -35,6 +34,18 @@ const colors = [
     "#8dd3c7",
     "#ffed6f",
 ];
+
+function createImageID() {
+    const characters =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const IdLength = 12;
+    let imageID = "";
+    for (let i = 0; i < IdLength; i++) {
+        imageID += characters[Math.floor(Math.random() * characters.length)];
+    }
+
+    return imageID;
+}
 
 function drawSlice(
     context,
@@ -132,7 +143,7 @@ function createPieChart() {
     const context = canvas.getContext("2d");
     const categories = createSlices(context);
     createLegend(context, categories);
-    const imageID = uuidv4().slice(-12);
+    const imageID = createImageID(); //uuidv4().slice(-12);
     const out = fs.createWriteStream(`./public/pc/${imageID}.png`);
     const stream = canvas.createPNGStream();
     stream.pipe(out);
