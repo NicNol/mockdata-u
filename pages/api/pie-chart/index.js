@@ -1,5 +1,12 @@
 const { createCanvas } = require("canvas");
-const fs = require("fs");
+import aws from "aws-sdk";
+
+aws.config.update({
+    accessKeyId: process.env.AWS_ACCESSKEY,
+    secretAccessKey: process.env.AWS_SECRETKEY,
+    region: process.env.AWS_BUCKETREGION,
+    signatureVersion: "v4",
+});
 
 const userData = {
     "Classical music": 10,
@@ -8,20 +15,6 @@ const userData = {
     Jazz: 12,
     Emo: 5,
 };
-
-// Set Dimensions of Canvas
-const borderWidth = 64;
-const pieDiameter = 800;
-const pieLegendMargin = 20;
-const legendHeight = 50 * Object.keys(userData).length;
-const canvasWidth = borderWidth * 2 + pieDiameter;
-const canvasHeight =
-    borderWidth * 2 + pieDiameter + pieLegendMargin + legendHeight;
-
-const grandTotal = Object.values(userData).reduce(
-    (prev, curr) => prev + curr,
-    0
-);
 
 const colors = [
     "#80b1d3",
@@ -64,24 +57,28 @@ function drawSlice(
     context.fill();
 }
 
-function labelSlices(context, labels) {
+function labelSlices(context, labels, sliceDetails) {
+    const { grandTotal, pieChartData } = sliceDetails;
     labels.forEach((label, index) => {
         const { objectKey, positionX, positionY } = label;
-        const percentage = Math.round((100 * userData[objectKey]) / grandTotal);
+        const percentage = Math.round(
+            (100 * pieChartData[objectKey]) / grandTotal
+        );
         context.fillStyle = "#000";
         context.font = "bold 36px Arial";
         context.fillText(`${percentage}%`, positionX - 20, positionY);
     });
 }
 
-function createSlices(context) {
+function createSlices(context, sliceDetails) {
+    const { pieDiameter, grandTotal, borderWidth, pieChartData } = sliceDetails;
     const radius = Math.min(pieDiameter / 2, pieDiameter / 2);
     const labels = [];
     const output = [];
     let startAngle = 0;
 
-    Object.keys(userData).forEach((key, index) => {
-        const sliceAngle = (2 * Math.PI * userData[key]) / grandTotal;
+    Object.keys(pieChartData).forEach((key, index) => {
+        const sliceAngle = (2 * Math.PI * pieChartData[key]) / grandTotal;
         const labelX =
             pieDiameter / 2 +
             borderWidth +
@@ -111,11 +108,12 @@ function createSlices(context) {
         });
         startAngle += sliceAngle;
     });
-    labelSlices(context, labels);
+    labelSlices(context, labels, sliceDetails);
     return output;
 }
 
-function createLegend(context, categories) {
+function createLegend(context, categories, legendDetails) {
+    const { pieDiameter, borderWidth, pieLegendMargin } = legendDetails;
     const squareLength = 40;
     const squareMargin = 10;
     let currentY = borderWidth + pieDiameter + pieLegendMargin;
@@ -138,25 +136,64 @@ function createLegend(context, categories) {
     });
 }
 
-function createPieChart() {
+function createPieChart(pieChartData, res) {
+    // Set Dimensions of Canvas
+    const borderWidth = 64;
+    const pieDiameter = 800;
+    const pieLegendMargin = 20;
+    const legendHeight = 50 * Object.keys(pieChartData).length;
+    const canvasWidth = borderWidth * 2 + pieDiameter;
+    const canvasHeight =
+        borderWidth * 2 + pieDiameter + pieLegendMargin + legendHeight;
+
+    const grandTotal = Object.values(pieChartData).reduce(
+        (prev, curr) => prev + curr,
+        0
+    );
+
+    const pieDetails = {
+        pieDiameter,
+        grandTotal,
+        borderWidth,
+        pieLegendMargin,
+        pieChartData,
+    };
+
     const canvas = createCanvas(canvasWidth, canvasHeight);
     const context = canvas.getContext("2d");
-    const categories = createSlices(context);
-    createLegend(context, categories);
-    const imageID = createImageID(); //uuidv4().slice(-12);
-    const out = fs.createWriteStream(`./public/pc/${imageID}.png`);
+    const categories = createSlices(context, pieDetails);
+    createLegend(context, categories, pieDetails);
+    const imageID = createImageID();
     const stream = canvas.createPNGStream();
-    stream.pipe(out);
 
-    return imageID;
+    uploadPNG(stream, imageID, res);
+}
+
+function uploadPNG(pngStream, imageID, res) {
+    const s3 = new aws.S3();
+    const params = {
+        Bucket: process.env.AWS_BUCKETNAME,
+        Key: `${imageID}.png`,
+        Body: pngStream,
+        ContentType: "image/png",
+    };
+
+    s3.upload(params, (err, data) => {
+        if (err) {
+            console.log(err);
+            res.status(400).json({ status: "error", url: null });
+        } else {
+            res.status(200).json({ status: "success", url: data.Location });
+        }
+    });
 }
 
 export default function handler(req, res) {
+    const pieChartData = req.body || userData;
     try {
-        const imageID = createPieChart();
-        const url = `http://${req.headers.host}/pc/${imageID}.png`;
-        res.status(200).json({ status: "success", url: url });
+        createPieChart(pieChartData, res);
     } catch (err) {
+        console.log(err);
         res.status(400).json({ status: "error", url: null });
     }
 }
