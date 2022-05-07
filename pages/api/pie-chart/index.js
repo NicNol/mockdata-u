@@ -5,8 +5,8 @@ import path from "path";
 const basePath = process.cwd();
 const publicDir = path.join(basePath, "public");
 
-registerFont(`${publicDir}/fonts/Archivo-VariableFont_wdth,wght.ttf`, {
-    family: "Archivo",
+registerFont(`${publicDir}/fonts/NotoSansMono-VariableFont_wdth,wght.ttf`, {
+    family: "NotoSansMono",
 });
 
 aws.config.update({
@@ -73,7 +73,7 @@ function labelSlices(context, labels, sliceDetails) {
             (100 * pieChartData[objectKey]) / grandTotal
         );
         context.fillStyle = "#000";
-        context.font = "bold 36px Archivo";
+        context.font = "bold 36px NotoSansMono";
         context.fillText(
             `${percentage}%`.split("").join(String.fromCharCode(8201)),
             positionX - 20,
@@ -136,7 +136,7 @@ function createLegend(context, categories, legendDetails) {
 
         // Add Text
         context.fillStyle = "#000000"; // Black
-        context.font = "24px Archivo";
+        context.font = "24px NotoSansMono";
         context.fillText(
             category.objectKey.split("").join(String.fromCharCode(8201)),
             borderWidth + squareLength + squareMargin,
