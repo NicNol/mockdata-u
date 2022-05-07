@@ -74,11 +74,7 @@ function labelSlices(context, labels, sliceDetails) {
         );
         context.fillStyle = "#000";
         context.font = "bold 36px NotoSansMono";
-        context.fillText(
-            `${percentage}%`.split("").join(String.fromCharCode(8201)),
-            positionX - 20,
-            positionY
-        );
+        context.fillText(`${percentage}%`, positionX - 20, positionY);
     });
 }
 
@@ -138,7 +134,7 @@ function createLegend(context, categories, legendDetails) {
         context.fillStyle = "#000000"; // Black
         context.font = "24px NotoSansMono";
         context.fillText(
-            category.objectKey.split("").join(String.fromCharCode(8201)),
+            category.objectKey,
             borderWidth + squareLength + squareMargin,
             currentY + 28
         );
