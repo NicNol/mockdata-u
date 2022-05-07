@@ -1,5 +1,13 @@
-const { createCanvas } = require("canvas");
+const { createCanvas, registerFont } = require("canvas");
 import aws from "aws-sdk";
+import path from "path";
+
+const basePath = process.cwd();
+const publicDir = path.join(basePath, "public");
+
+registerFont(`${publicDir}/fonts/Archivo-VariableFont_wdth,wght.ttf`, {
+    family: "Archivo",
+});
 
 aws.config.update({
     accessKeyId: process.env.AWS_ACCESSKEY,
@@ -65,7 +73,7 @@ function labelSlices(context, labels, sliceDetails) {
             (100 * pieChartData[objectKey]) / grandTotal
         );
         context.fillStyle = "#000";
-        context.font = "bold 36px Nimbus Sans";
+        context.font = "bold 36px Archivo";
         context.fillText(`${percentage}%`, positionX - 20, positionY);
     });
 }
@@ -124,7 +132,7 @@ function createLegend(context, categories, legendDetails) {
 
         // Add Text
         context.fillStyle = "#000000"; // Black
-        context.font = "24px Nimbus Sans";
+        context.font = "24px Archivo";
         context.fillText(
             category.objectKey,
             borderWidth + squareLength + squareMargin,
@@ -197,3 +205,7 @@ export default function handler(req, res) {
         res.status(400).json({ status: "error", url: null });
     }
 }
+
+export const config = {
+    unstable_includeFiles: ["public"],
+};
