@@ -65,7 +65,7 @@ function labelSlices(context, labels, sliceDetails) {
             (100 * pieChartData[objectKey]) / grandTotal
         );
         context.fillStyle = "#000";
-        context.font = "bold 36px";
+        context.font = "bold 36px Nimbus Sans";
         context.fillText(`${percentage}%`, positionX - 20, positionY);
     });
 }
@@ -124,7 +124,7 @@ function createLegend(context, categories, legendDetails) {
 
         // Add Text
         context.fillStyle = "#000000"; // Black
-        context.font = "24px";
+        context.font = "24px Nimbus Sans";
         context.fillText(
             category.objectKey,
             borderWidth + squareLength + squareMargin,
