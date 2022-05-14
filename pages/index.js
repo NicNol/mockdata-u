@@ -1,6 +1,9 @@
 import { Flex, Heading } from "@chakra-ui/react";
 import AppWrapper from "../components/AppWrapper";
 import HomeCard from "../components/HomeCard";
+import Student from "../public/images/student.jpg";
+import University from "../public/images/college.jpg";
+import Class from "../public/images/teacher.jpg";
 
 export default function Home() {
     return (
@@ -27,6 +30,7 @@ export default function Home() {
                             "Student data may have first names, last names, email addresses, and ID numbers"
                         }
                         href={"/mock-student"}
+                        image={Student}
                     />
                     <HomeCard
                         title={"Class"}
@@ -34,6 +38,7 @@ export default function Home() {
                             "Class data may have a department, course number, quarter (term), and instructor"
                         }
                         href={"/mock-class"}
+                        image={Class}
                     />
                     <HomeCard
                         title={"University"}
@@ -41,6 +46,7 @@ export default function Home() {
                             "University data may have an institution name, street address, city, state, and zip code"
                         }
                         href={"/mock-class"}
+                        image={University}
                     />
                 </Flex>
             </Flex>
