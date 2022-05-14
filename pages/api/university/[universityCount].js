@@ -3,10 +3,10 @@ import { createUniversity } from "./index";
 export default function handler(req, res) {
     const { universityCount } = req.query;
 
-    res.status(200).json(createMultipleClasses(universityCount));
+    res.status(200).json(createMultipleUniversities(universityCount));
 }
 
-export function createMultipleClasses(numberOfUniversities) {
+export function createMultipleUniversities(numberOfUniversities) {
     const classes = [];
     const num = Number(numberOfUniversities);
 
