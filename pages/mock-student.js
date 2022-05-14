@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Flex, Text, useDisclosure } from "@chakra-ui/react";
 import AppWrapper from "../components/AppWrapper";
 import DataCard from "../components/DataCard";
-import Settings from "../components/Settings";
+import StudentSettings from "../components/StudentSettings";
 import { createMultipleStudents } from "./api/student/[studentCount]";
 import DataButtonGroup from "../components/DataButtonGroup";
 import DeleteAlert from "../components/DeleteAlert";
@@ -69,7 +69,7 @@ export default function Home() {
                         justifyContent={"space-between"}
                     >
                         <BreadCrumb currentPageName={"Mock Student Data"} />
-                        <Settings
+                        <StudentSettings
                             setFactorySize={setFactorySize}
                             factorySize={factorySize}
                             toggles={{
