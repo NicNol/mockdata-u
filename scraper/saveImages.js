@@ -21,8 +21,17 @@ function saveImage(textLine) {
 }
 
 const downloadImage = (imageURL, filename, cb) => {
-    request.head(imageURL, (err, res, body) => {
-        request(imageURL).pipe(fs.createWriteStream(filename)).on("close", cb);
+    const requestOptions = {
+        url: imageURL,
+        headers: {
+            "User-Agent": "request",
+        },
+    };
+
+    request.head(requestOptions, (err, res, body) => {
+        request(requestOptions)
+            .pipe(fs.createWriteStream(filename))
+            .on("close", cb);
     });
 };
 
