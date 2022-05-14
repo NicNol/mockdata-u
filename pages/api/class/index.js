@@ -176,9 +176,9 @@ export function createClass() {
     const year = years[Math.floor(Math.random() * years.length)];
 
     const outputClass = {
-        class: classInitialism,
-        quarter: `${quarter} ${year}`,
+        classTitle: classInitialism,
         department: department,
+        quarter: `${quarter} ${year}`,
         instructor: instructor,
     };
 

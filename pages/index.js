@@ -24,21 +24,21 @@ export default function Home() {
                     <HomeCard
                         title={"Student"}
                         description={
-                            "Students may have first names, last names, email addresses, and ID numbers"
+                            "Student data may have first names, last names, email addresses, and ID numbers"
                         }
                         href={"/mock-student"}
                     />
                     <HomeCard
                         title={"Class"}
                         description={
-                            "Classes may have numbers, titles, assignments, modules, instructors, and student names"
+                            "Class data may have a department, course number, quarter (term), and instructor"
                         }
                         href={"/mock-class"}
                     />
                     <HomeCard
                         title={"University"}
                         description={
-                            "Universities may have names, logos, addresses, professional staff, departments, classes, and students"
+                            "University data may have an institution name, street address, city, state, and zip code"
                         }
                         href={"/mock-class"}
                     />
