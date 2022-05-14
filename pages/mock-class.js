@@ -27,12 +27,12 @@ export default function Home() {
     useEffect(() => setDataAfterDelete([]), [classes]);
 
     function deleteOne(classToDelete) {
-        const modifiedStudents = classes.filter((classData) =>
+        const modifiedClassData = classes.filter((classData) =>
             Object.keys(classData).some(
                 (value, index) => classData[value] !== classToDelete[value]
             )
         );
-        setDataAfterDelete(modifiedStudents);
+        setDataAfterDelete(modifiedClassData);
         onOpen();
     }
 
@@ -44,7 +44,7 @@ export default function Home() {
         return output;
     }
 
-    const studentDataCards = classes.map((classData) => {
+    const classDataCards = classes.map((classData) => {
         const { classTitle, quarter, department, instructor } = classData;
         return (
             <DataCard
@@ -105,7 +105,7 @@ export default function Home() {
                             Showing data for {classes.length}{" "}
                             {classes.length === 1 ? "class" : "classes"}:
                         </Text>
-                        {studentDataCards}
+                        {classDataCards}
                     </Flex>
                 </Flex>
             </Flex>
