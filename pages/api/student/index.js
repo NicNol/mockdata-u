@@ -5,31 +5,23 @@ export default function handler(req, res) {
 }
 
 export function createStudent() {
-    const university = "university";
     const firstName = faker.name.firstName();
     const lastName = faker.name.lastName();
-    const email = faker.internet.email(
-        firstName,
-        lastName,
-        `${university}.edu`
-    );
+    const email = faker.internet.email(firstName, lastName, `university.edu`);
 
-    const idNumber = generateIdNumber();
-
-    const student = {
+    return {
         firstName: firstName,
         lastName: lastName,
         email: email,
-        idNumber: idNumber,
+        idNumber: generateIdNumber(),
     };
+}
 
-    return student;
+function getThreeDigitNumberAsString() {
+    const number = faker.datatype.number({ min: 1, max: 999 }).toString();
+    return number.padStart(3, "0");
 }
 
 function generateIdNumber() {
-    const number = faker.datatype.number({ min: 1, max: 999999999 }).toString();
-    const nineDigitString = number.padStart(9 - number.length, "0");
-    const threeChunkArray = nineDigitString.match(/.{1,3}/g);
-
-    return `${threeChunkArray[0]}-${threeChunkArray[1]}-${threeChunkArray[2]}`;
+    return `${getThreeDigitNumberAsString()}-${getThreeDigitNumberAsString()}-${getThreeDigitNumberAsString()}`;
 }

@@ -5,47 +5,50 @@ export default function handler(req, res) {
 }
 
 export function createUniversity() {
-    const streetAddress = `${getRandomBuildingNumber()} ${faker.address.direction(
+    const { direction, streetName, city, stateAbbr, zipCodeByState } =
+        faker.address;
+    const streetAddress = `${buildingNumber()} ${direction(
         true
-    )} ${faker.address.streetName()} ${getRandomRoadType()}`;
-    const city = faker.address.city();
-    const state = faker.address.stateAbbr();
-    const zip = faker.address.zipCodeByState(state);
+    )} ${streetName()} ${roadType()}`;
+    const cityName = city();
+    const state = stateAbbr();
+    const zip = zipCodeByState(state);
 
-    const universityName = `${city} ${getRandomInstitution()}`;
+    const universityName = `${cityName} ${getRandomInstitution()}`;
 
-    const university = {
+    return {
         name: universityName,
         streetAddress: streetAddress,
-        city: city,
+        city: cityName,
         state: state,
         zip: zip,
     };
-
-    return university;
 }
 
-function getRandomRoadType() {
+function getRandomValueFromArray(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function roadType() {
     const roadTypes = [
-        "Street",
         "Avenue",
-        " Boulevard",
+        "Boulevard",
         "Circle",
+        "Drive",
         "Highway",
         "Lane",
         "Loop",
+        "Parkway",
         "Road",
+        "Street",
         "Terrace",
         "Way",
-        "Parkway",
-        "Drive",
     ];
 
-    const index = Math.floor(Math.random() * roadTypes.length);
-    return roadTypes[index];
+    return getRandomValueFromArray(roadTypes);
 }
 
-function getRandomBuildingNumber() {
+function buildingNumber() {
     return `${Math.floor(Math.random() * 99899) + 100}`;
 }
 
@@ -57,6 +60,5 @@ function getRandomInstitution() {
         "Institute of Technology",
     ];
 
-    const index = Math.floor(Math.random() * institutions.length);
-    return institutions[index];
+    return getRandomValueFromArray(institutions);
 }
