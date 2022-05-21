@@ -161,6 +161,10 @@ const courseMap = {
 const quarters = ["Fall", "Winter", "Spring", "Summer"];
 const years = ["2022", "2023"];
 
+function getRandomValueFromArray(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+
 export function createClass() {
     const instructor = `${faker.name.firstName()} ${faker.name.lastName()}`;
     const departmentInitials =
@@ -172,15 +176,13 @@ export function createClass() {
         Math.floor(Math.random() * 399) + 100
     }`;
 
-    const quarter = quarters[Math.floor(Math.random() * quarters.length)];
-    const year = years[Math.floor(Math.random() * years.length)];
+    const quarter = getRandomValueFromArray(quarters);
+    const year = getRandomValueFromArray(years);
 
-    const outputClass = {
+    return {
         classTitle: classInitialism,
         department: department,
         quarter: `${quarter} ${year}`,
         instructor: instructor,
     };
-
-    return outputClass;
 }
