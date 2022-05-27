@@ -31,7 +31,7 @@ Example response:
 ```json
 {
     "status": "success",
-    "url": "https://mockdata-u.s3.us-west-2.amazonaws.com/TYdLs3kqLVqy.png"}
+    "url": "https://mockdata-u.s3.us-west-2.amazonaws.com/TYdLs3kqLVqy.png"
 }
 ```
 
