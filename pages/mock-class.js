@@ -52,6 +52,7 @@ export default function Home() {
                 title={showTitle ? classTitle : ""}
                 textArray={handleTextArray(department, quarter, instructor)}
                 deleteCard={() => deleteOne(classData)}
+                json={classData}
             />
         );
     });

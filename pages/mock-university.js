@@ -54,6 +54,7 @@ export default function Home() {
                     `${city}, ${state} ${zip}`
                 )}
                 deleteCard={() => deleteOne(universityData)}
+                json={universityData}
             />
         );
     });
