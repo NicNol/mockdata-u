@@ -1,34 +1,79 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [MockData U.](https://mockdata-u.vercel.app/)
 
-## Getting Started
+MockData U. is a project that allows users to mock fake but realistic data related to a college or university. The project is intended for software developers and UI designers of educational software. It allows users to generate data for one or more students, classes, or universities using an API or a GUI. You can access a demo of this project [here](https://mockdata-u.vercel.app/).
 
-First, run the development server:
+![Preview of MockData U. Home Page](/public/images/preview-homepage.png?raw=true)
+![Preview of MockData U. Mock Student Page](/public/images/preview-mock-student.png?raw=true)
 
-```bash
-npm run dev
-# or
-yarn dev
+# API Calls
+
+At this time, the API does not require an API key. Make API requests by sending HTTP `GET` requests to the desired URL.
+
+URLs are relative to the hosting domain, currently: `https://mockdata-u.vercel.app/`
+
+## Mock Student Data
+
+To mock data for a single student, use the end point: `/api/student/`
+
+To mock data for multiple students, enter an integer after the above call corresponding to the number of students you want to mock. Example: `/api/student/5` would mock data for 5 students.
+
+Example student:
+
+```json
+{
+    "firstName": "Kathlyn",
+    "lastName": "Goyette",
+    "email": "Kathlyn.Goyette@university.edu",
+    "idNumber": "933-424-894"
+}
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Mock Class Data
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+To mock data for a single class, use the end point: `/api/class/`
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+To mock data for multiple classes, enter an integer after the above call corresponding to the number of classes you want to mock. Example: `/api/class/5` would mock data for 5 classes.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Example class:
 
-## Learn More
+```json
+{
+    "classTitle": "LIB 337",
+    "department": "Library and Information Science",
+    "quarter": "Winter 2022",
+    "instructor": "Angeline Stokes"
+}
+```
 
-To learn more about Next.js, take a look at the following resources:
+## Mock University Data
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+To mock data for a single university, use the end point: `/api/university/`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+To mock data for multiple universities, enter an integer after the above call corresponding to the number of universities you want to mock. Example: `/api/university/5` would mock data for 5 universities.
 
-## Deploy on Vercel
+Example university:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```json
+{
+    "name": "Somerville College",
+    "streetAddress": "2841 E Schoen River Street",
+    "city": "Somerville",
+    "state": "MS",
+    "zip": "55540"
+}
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# Development
+
+## Prerequisites
+
+1. [Node.js](https://nodejs.dev/learn/how-to-install-nodejs), v16 LTS (recommended) or higher
+2. [npm](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm), v8.6.0 (recommended) or higher
+
+## Install
+
+Download the current codebase or create a fork. Navigate to the root of the project directory in your terminal window and call `npm install`. This will install the required node module dependencies into your project folder.
+
+## Run
+
+Next, call `npm run dev`. This will start [Next.js](https://nextjs.org/) in development mode. Open a browser window and navigate to `localhost:3000`. This is the project running locally on your machine. 🎉🎉🎉
