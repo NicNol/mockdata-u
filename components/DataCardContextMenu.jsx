@@ -14,11 +14,17 @@ import { RiDeleteBin2Line } from "react-icons/ri";
 import DeleteAlert from "./DeleteAlert";
 import copy from "copy-to-clipboard";
 
-export default function DataCardContextMenu({ content, deleteCard }) {
+export default function DataCardContextMenu({ content, deleteCard, json }) {
     const [openStatus, setOpenStatus] = useState(false);
 
-    function handleCopy() {
+    function handlePlainTextCopy() {
         copy(content);
+        setOpenStatus(true);
+        setTimeout(() => setOpenStatus(false), 2000);
+    }
+
+    function handleJsonCopy() {
+        copy(JSON.stringify(json, null, 2));
         setOpenStatus(true);
         setTimeout(() => setOpenStatus(false), 2000);
     }
@@ -57,11 +63,14 @@ export default function DataCardContextMenu({ content, deleteCard }) {
                 <MenuList>
                     <MenuItem
                         icon={<IoCopyOutline />}
-                        onClick={() => handleCopy()}
+                        onClick={() => handlePlainTextCopy()}
                     >
                         Copy Data as Text
                     </MenuItem>
-                    <MenuItem icon={<IoCopyOutline />} isDisabled>
+                    <MenuItem
+                        icon={<IoCopyOutline />}
+                        onClick={() => handleJsonCopy()}
+                    >
                         Copy Data as JSON
                     </MenuItem>
                     <MenuItem

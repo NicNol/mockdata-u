@@ -50,6 +50,7 @@ export default function Home() {
                 title={showTitle ? `${firstName} ${lastName}` : ""}
                 textArray={handleTextArray(email, idNumber)}
                 deleteCard={() => deleteOne(student)}
+                json={student}
             />
         );
     });
