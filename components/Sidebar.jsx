@@ -16,13 +16,13 @@ export default function Sidebar({ children }) {
             color={"#222"}
         >
             <Flex direction={"column"}>
-                <Heading size={"sm"}>Navigation</Heading>
+                <Heading size={"md"}>Navigation</Heading>
                 <NextLink href={"/"} passHref>
                     <Link>Home</Link>
                 </NextLink>
             </Flex>
             <Flex direction={"column"}>
-                <Heading size={"sm"}>Mock Data</Heading>
+                <Heading size={"md"}>Mock Data</Heading>
                 <NextLink href={"/mock-student"} passHref>
                     <Link>Student Data</Link>
                 </NextLink>
@@ -31,6 +31,23 @@ export default function Sidebar({ children }) {
                 </NextLink>
                 <NextLink href={"/mock-university"} passHref>
                     <Link>University Data</Link>
+                </NextLink>
+            </Flex>
+            <Flex direction={"column"}>
+                <Heading size={"md"}>API Documentation</Heading>
+                <NextLink
+                    href={"https://github.com/NicNol/mockdata-u#api-calls"}
+                    passHref
+                >
+                    <Link isExternal>Mock Data</Link>
+                </NextLink>
+                <NextLink
+                    href={
+                        "https://github.com/NicNol/mockdata-u/tree/main/pages/api/pie-chart#api-calls"
+                    }
+                    passHref
+                >
+                    <Link isExternal>Pie Chart Microservice</Link>
                 </NextLink>
             </Flex>
             {children}

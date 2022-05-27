@@ -58,6 +58,26 @@ export default function HamburgerMenu() {
                                 <NextLink passHref href={"/mock-university"}>
                                     <Link>Mock University Data</Link>
                                 </NextLink>
+                                <NextLink
+                                    href={
+                                        "https://github.com/NicNol/mockdata-u#api-calls"
+                                    }
+                                    passHref
+                                >
+                                    <Link isExternal>
+                                        Mock Data API Documentation
+                                    </Link>
+                                </NextLink>
+                                <NextLink
+                                    href={
+                                        "https://github.com/NicNol/mockdata-u/tree/main/pages/api/pie-chart#api-calls"
+                                    }
+                                    passHref
+                                >
+                                    <Link isExternal>
+                                        Pie Chart Microservice API Documentation
+                                    </Link>
+                                </NextLink>
                             </Stack>
                         </Collapse>
                     </Flex>
