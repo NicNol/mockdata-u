@@ -3,7 +3,7 @@ import { Flex, Heading, Text } from "@chakra-ui/react";
 import CopyButton from "./CopyButton";
 import DataCardContextMenu from "./DataCardContextMenu";
 
-export default function DataCard({ title, textArray, deleteCard }) {
+export default function DataCard({ title, textArray, deleteCard, json }) {
     const content = textArray.reduce(
         (previous, current) => `${previous}\n${current}`,
         title
@@ -27,6 +27,7 @@ export default function DataCard({ title, textArray, deleteCard }) {
                         <DataCardContextMenu
                             content={content}
                             deleteCard={deleteCard}
+                            json={json}
                         />
                     </Flex>
                     <Flex w={"100%"} pb={8}>
