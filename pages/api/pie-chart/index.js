@@ -2,13 +2,16 @@ const { createCanvas, registerFont } = require("canvas");
 import aws from "aws-sdk";
 import path from "path";
 
+/* Provide path to font in public directory */
 const basePath = process.cwd();
 const publicDir = path.join(basePath, "public");
 
+/* Register custom font with Canvas; Vercel does not provide any fonts in its deployment */
 registerFont(`${publicDir}/fonts/NotoSansMono-VariableFont_wdth,wght.ttf`, {
     family: "NotoSansMono",
 });
 
+/* Set AWS configuration from environment variables */
 aws.config.update({
     accessKeyId: process.env.AWS_ACCESSKEY,
     secretAccessKey: process.env.AWS_SECRETKEY,
@@ -16,6 +19,7 @@ aws.config.update({
     signatureVersion: "v4",
 });
 
+/* Default Pie Chart data if user does not include a JSON body*/
 const userData = {
     "Classical music": 10,
     "Alternative rock": 14,
@@ -24,6 +28,7 @@ const userData = {
     Emo: 5,
 };
 
+/* Pie chart slice colors (used in order) */
 const colors = [
     "#80b1d3",
     "#fb8072",
@@ -35,6 +40,17 @@ const colors = [
     "#8dd3c7",
     "#ffed6f",
 ];
+
+/* Set Dimensions of Canvas, Pie Chart, and Pie Chart Legend */
+const borderWidth = 64;
+const pieDiameter = 800;
+const radius = pieDiameter / 2;
+const pieLegendMargin = 20;
+const canvasWidth = borderWidth * 2 + pieDiameter;
+const legendSquareLength = 40;
+const legendSquareMargin = 10;
+const centerX = radius + borderWidth;
+const centerY = radius + borderWidth;
 
 function createImageID() {
     const characters =
@@ -48,16 +64,9 @@ function createImageID() {
     return imageID;
 }
 
-function drawSlice(
-    context,
-    centerX,
-    centerY,
-    radius,
-    startAngle,
-    endAngle,
-    color
-) {
-    context.fillStyle = color;
+function drawSlice(context, sliceData) {
+    const { startAngle, endAngle, index } = sliceData;
+    context.fillStyle = colors[index];
     context.beginPath();
     context.moveTo(centerX, centerY);
     context.arc(centerX, centerY, radius, startAngle, endAngle);
@@ -79,105 +88,120 @@ function labelSlices(context, labels, sliceDetails) {
 }
 
 function createSlices(context, sliceDetails) {
-    const { pieDiameter, grandTotal, borderWidth, pieChartData } = sliceDetails;
-    const radius = Math.min(pieDiameter / 2, pieDiameter / 2);
+    const { grandTotal, pieChartData } = sliceDetails;
     const labels = [];
-    const output = [];
+    const legendDetails = [];
     let startAngle = 0;
 
     Object.keys(pieChartData).forEach((key, index) => {
-        const sliceAngle = (2 * Math.PI * pieChartData[key]) / grandTotal;
-        const labelX =
-            pieDiameter / 2 +
-            borderWidth +
-            (radius / 2) * Math.cos(startAngle + sliceAngle / 2);
-        const labelY =
-            pieDiameter / 2 +
-            borderWidth +
-            (radius / 2) * Math.sin(startAngle + sliceAngle / 2);
+        const pieChartDetails = { pieChartData, key, grandTotal, startAngle };
+        const endAngle = startAngle + getSliceAngle(pieChartDetails);
+        const sliceData = { ...pieChartData, endAngle, index };
 
-        drawSlice(
-            context,
-            pieDiameter / 2 + borderWidth,
-            pieDiameter / 2 + borderWidth,
-            radius,
-            startAngle,
-            startAngle + sliceAngle,
-            colors[index]
-        );
-        labels.push({
-            objectKey: key,
-            positionX: labelX,
-            positionY: labelY,
-        });
-        output.push({
-            objectKey: key,
-            color: colors[index],
-        });
-        startAngle += sliceAngle;
+        drawSlice(context, sliceData);
+        handleSliceLabels(pieChartDetails, labels);
+        handleLegendDetails(legendDetails, key, index);
+        startAngle = endAngle;
     });
     labelSlices(context, labels, sliceDetails);
-    return output;
+    return legendDetails;
 }
 
-function createLegend(context, categories, legendDetails) {
-    const { pieDiameter, borderWidth, pieLegendMargin } = legendDetails;
-    const squareLength = 40;
-    const squareMargin = 10;
-    let currentY = borderWidth + pieDiameter + pieLegendMargin;
-    categories.forEach((category) => {
-        // Draw Square
-        context.fillStyle = category.color;
-        context.fillRect(borderWidth, currentY, squareLength, squareLength);
-
-        // Add Text
-        context.fillStyle = "#000000"; // Black
-        context.font = "24px NotoSansMono";
-        context.fillText(
-            category.objectKey,
-            borderWidth + squareLength + squareMargin,
-            currentY + 28
-        );
-
-        // Move Y pointer
-        currentY += squareLength + squareMargin;
+function handleSliceLabels(pieChartDetails, labels) {
+    const labelX = getSliceLabelPositionX(pieChartDetails);
+    const labelY = getSliceLabelPositionY(pieChartDetails);
+    labels.push({
+        objectKey: key,
+        positionX: labelX,
+        positionY: labelY,
     });
+}
+
+function handleLegendDetails(legendDetails, key, index) {
+    legendDetails.push({
+        objectKey: key,
+        color: colors[index],
+    });
+}
+
+function getSliceAngle(chartDetails) {
+    const { pieChartData, key, grandTotal } = chartDetails;
+    return (2 * Math.PI * pieChartData[key]) / grandTotal;
+}
+
+function getSliceLabelPositionX(chartDetails) {
+    const { startAngle, sliceAngle } = chartDetails;
+    return (
+        radius +
+        borderWidth +
+        (radius / 2) * Math.cos(startAngle + sliceAngle / 2)
+    );
+}
+
+function getSliceLabelPositionY(chartDetails) {
+    const { startAngle, sliceAngle } = chartDetails;
+    return (
+        radius +
+        borderWidth +
+        (radius / 2) * Math.sin(startAngle + sliceAngle / 2)
+    );
+}
+
+function createLegend(context, categories) {
+    let currentY = borderWidth + pieDiameter + pieLegendMargin;
+
+    categories.forEach((category) => {
+        const legendDetails = { currentY, category };
+        createLegendSquare(context, legendDetails);
+        createLegendText(context, legendDetails);
+
+        // Move Y position down to next item in legend
+        currentY += legendSquareLength + legendSquareMargin;
+    });
+}
+
+function createLegendSquare(context, legendDetails) {
+    const { currentY, category } = legendDetails;
+    context.fillStyle = category.color;
+    context.fillRect(
+        borderWidth,
+        currentY,
+        legendSquareLength,
+        legendSquareLength
+    );
+}
+
+function createLegendText(context, legendDetails) {
+    const { category, squareLength, squareMargin, currentY } = legendDetails;
+    context.fillStyle = "#000000"; // Black
+    context.font = "24px NotoSansMono";
+    context.fillText(
+        category.objectKey,
+        borderWidth + squareLength + squareMargin,
+        currentY + 28
+    );
 }
 
 function createPieChart(pieChartData, res) {
-    // Set Dimensions of Canvas
-    const borderWidth = 64;
-    const pieDiameter = 800;
-    const pieLegendMargin = 20;
     const legendHeight = 50 * Object.keys(pieChartData).length;
-    const canvasWidth = borderWidth * 2 + pieDiameter;
     const canvasHeight =
         borderWidth * 2 + pieDiameter + pieLegendMargin + legendHeight;
-
-    const grandTotal = Object.values(pieChartData).reduce(
-        (prev, curr) => prev + curr,
-        0
-    );
-
-    const pieDetails = {
-        pieDiameter,
-        grandTotal,
-        borderWidth,
-        pieLegendMargin,
-        pieChartData,
-    };
-
+    const grandTotal = sumObjectValues(pieChartData);
+    const pieDetails = { grandTotal, pieChartData };
     const canvas = createCanvas(canvasWidth, canvasHeight);
     const context = canvas.getContext("2d");
     const categories = createSlices(context, pieDetails);
-    createLegend(context, categories, pieDetails);
+    createLegend(context, categories);
     const imageID = createImageID();
     const stream = canvas.createPNGStream();
-
     uploadPNG(stream, imageID, res);
 }
 
-function uploadPNG(pngStream, imageID, res) {
+function sumObjectValues(obj) {
+    return Object.values(obj).reduce((prev, curr) => prev + curr, 0);
+}
+
+function uploadPNG(pngStream, imageID, response) {
     const s3 = new aws.S3();
     const params = {
         Bucket: process.env.AWS_BUCKETNAME,
@@ -186,17 +210,24 @@ function uploadPNG(pngStream, imageID, res) {
         ContentType: "image/png",
     };
 
-    s3.upload(params, (err, data) => {
+    uploadToS3(s3, params, response);
+}
+
+function uploadToS3(s3Instance, parameters, response) {
+    s3Instance.upload(parameters, (err, data) => {
         if (err) {
             console.log(err);
-            res.status(400).json({ status: "error", url: null });
+            response.status(400).json({ status: "error", url: null });
         } else {
-            res.status(200).json({ status: "success", url: data.Location });
+            response
+                .status(200)
+                .json({ status: "success", url: data.Location });
         }
     });
 }
 
-export default function handler(req, res) {
+/* Top level request handler for the Next.js API functionality */
+export default function requestHandler(req, res) {
     const pieChartData = req.body || userData;
     try {
         createPieChart(pieChartData, res);
@@ -206,6 +237,7 @@ export default function handler(req, res) {
     }
 }
 
+/* Allows static files in the public root folder to be consumed by the API */
 export const config = {
     unstable_includeFiles: ["public"],
 };
