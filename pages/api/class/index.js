@@ -165,17 +165,21 @@ function getRandomValueFromArray(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
+function getRandomKeyFromObject(obj) {
+    return Object.keys(obj)[
+        Math.floor(Math.random() * Object.keys(courseMap).length)
+    ];
+}
+
+function getCourseNumber() {
+    return Math.floor(Math.random() * 399) + 100;
+}
+
 export function createClass() {
     const instructor = `${faker.name.firstName()} ${faker.name.lastName()}`;
-    const departmentInitials =
-        Object.keys(courseMap)[
-            Math.floor(Math.random() * Object.keys(courseMap).length)
-        ];
+    const departmentInitials = getRandomKeyFromObject(courseMap);
     const department = courseMap[departmentInitials];
-    const classInitialism = `${departmentInitials} ${
-        Math.floor(Math.random() * 399) + 100
-    }`;
-
+    const classInitialism = `${departmentInitials} ${getCourseNumber()}`;
     const quarter = getRandomValueFromArray(quarters);
     const year = getRandomValueFromArray(years);
 
