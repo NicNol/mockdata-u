@@ -95,11 +95,12 @@ function createSlices(context, sliceDetails) {
 
     Object.keys(pieChartData).forEach((key, index) => {
         const pieChartDetails = { pieChartData, key, grandTotal, startAngle };
-        const endAngle = startAngle + getSliceAngle(pieChartDetails);
-        const sliceData = { ...pieChartData, endAngle, index };
+        const sliceAngle = getSliceAngle(pieChartDetails);
+        const endAngle = startAngle + sliceAngle;
+        const sliceData = { ...pieChartDetails, sliceAngle, endAngle, index };
 
         drawSlice(context, sliceData);
-        handleSliceLabels(pieChartDetails, labels);
+        handleSliceLabels(sliceData, labels);
         handleLegendDetails(legendDetails, key, index);
         startAngle = endAngle;
     });
@@ -173,12 +174,12 @@ function createLegendSquare(context, legendDetails) {
 }
 
 function createLegendText(context, legendDetails) {
-    const { category, squareLength, squareMargin, currentY } = legendDetails;
+    const { category, currentY } = legendDetails;
     context.fillStyle = "#000000"; // Black
     context.font = "24px NotoSansMono";
     context.fillText(
         category.objectKey,
-        borderWidth + squareLength + squareMargin,
+        borderWidth + legendSquareLength + legendSquareMargin,
         currentY + 28
     );
 }
