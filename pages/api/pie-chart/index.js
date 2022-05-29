@@ -108,6 +108,7 @@ function createSlices(context, sliceDetails) {
 }
 
 function handleSliceLabels(pieChartDetails, labels) {
+    const { key } = pieChartDetails;
     const labelX = getSliceLabelPositionX(pieChartDetails);
     const labelY = getSliceLabelPositionY(pieChartDetails);
     labels.push({
