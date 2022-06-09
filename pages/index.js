@@ -45,7 +45,7 @@ export default function Home() {
                         description={
                             "University data may have an institution name, street address, city, state, and zip code"
                         }
-                        href={"/mock-class"}
+                        href={"/mock-university"}
                         image={University}
                     />
                 </Flex>
